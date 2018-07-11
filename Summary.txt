@@ -1,0 +1,5 @@
+52210 Isograms found in total
+5706 Isograms found for easy difficulty
+19008 Isograms found for medium difficulty
+24599 Isograms found for hard difficulty
+2897 Isograms found for very hard difficulty

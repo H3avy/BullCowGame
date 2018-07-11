@@ -3,6 +3,7 @@
 #include <vector>
 #include <fstream>
 #include <iostream>
+#include <cstdlib>
 
 using FString = std::string;
 using int32 = int;
@@ -22,8 +23,6 @@ enum class EGuessStatus
 	Not_Lowercase,
 };
 
-
-
 class FBullCowGame {
 public:
 	FBullCowGame(); //constructor
@@ -34,6 +33,7 @@ public:
 	bool IsGameWon() const;
 	EGuessStatus CheckGuessValidity(FString) const;
 	std::vector<FString> WordList();
+	bool IsDifficultySet() const;
 
 	void Reset(); 
 	
@@ -47,10 +47,10 @@ private:
 	FString MyHiddenWord;
 	FString Difficulty;
 	bool bGameIsWon;
-
+	bool bDifficultySet;
 	bool IsIsogram(FString) const;
 	bool IsLowercase(FString) const;
+	
 	FString ToLowercase(FString);
 	FString SetHiddenWord(std::vector<FString>);
-	
 };

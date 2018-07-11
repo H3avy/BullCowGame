@@ -23,8 +23,8 @@ bool AskToPlayAgain();
 void PrintGameSummary();
 void TypeWriter(const FText, unsigned int);
 
-
-FBullCowGame BCGame; //instantiate a new game
+//instantiate a new game
+FBullCowGame BCGame;
 
 int main()
 {
@@ -55,19 +55,19 @@ void intro()
 				      "                                             | (_| | | | | | | (_| |                                              \n "
 				      "                                             \\__,_| |_| |_|  \\__,_|                                              \n"
 		              "                                                                                                                  \n\n" };
-	
+	//get Handle for console maipulation
 	HANDLE hConsole;
 	hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
-
+	//wait xxxx milliseconds before outputting the Intro, used for Videocapturing to position screen.
 	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 	
-	SetConsoleTextAttribute(hConsole, 45);
+	SetConsoleTextAttribute(hConsole, 4); // 4 sets cosnole Text to red
 	for (auto line : Logo)
 	{
 		TypeWriter(line, 1);
 	}
 	
-	SetConsoleTextAttribute(hConsole, 7);
+	SetConsoleTextAttribute(hConsole, 7); // 7 sets console Text back to white
 	TypeWriter(intro1, 30);
 	std::cout << BCGame.GetHiddenWordLength();
 	TypeWriter(intro2, 30);
@@ -76,21 +76,15 @@ void intro()
 
 void PlayGame()
 {
-	BCGame.Reset();
 	int32 MaxTries = BCGame.GetMaxTries();
-	
-
 	
 	while (!BCGame.IsGameWon() && BCGame.GetCurrentTry() <= MaxTries)
 	{		
-				
 		FText Guess = GetValidGuess();
 		// Submit valid guess to the game, and recieve counts
 		FBullCowCount BullCowCount = BCGame.SubmitValidGuess(Guess);
 		std::cout << "Bulls = " << BullCowCount.Bulls;
 		std::cout << " Cows = " << BullCowCount.Cows << "\n\n";
-		
-		
 	}
 	PrintGameSummary();
 	return;
@@ -136,6 +130,10 @@ bool AskToPlayAgain()
 
 	std::cout << std::endl;
 	//Return true if answer == Y || y
+	if (tolower(Response[0]) == 'y')
+	{
+		BCGame.Reset();
+	}
 	return (tolower(Response[0]) == 'y');
 }
 

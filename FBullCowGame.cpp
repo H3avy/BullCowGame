@@ -10,6 +10,7 @@ int32 FBullCowGame::GetMaxTries() const { return MyMaxTries; }
 int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
 int32 FBullCowGame::GetHiddenWordLength() const { return MyHiddenWord.length(); }
 bool FBullCowGame::IsGameWon() const { return bGameIsWon; }
+bool FBullCowGame::IsDifficultySet() const { return bDifficultySet; }
 
 
 void FBullCowGame::Reset()
@@ -20,6 +21,7 @@ void FBullCowGame::Reset()
 	MyHiddenWord = HIDDEN_WORD;
 	MyCurrentTry = 1;
 	bGameIsWon = false;
+	bDifficultySet = false;
 	
 	return;
 }
@@ -109,6 +111,8 @@ bool FBullCowGame::IsLowercase(FString Word) const
 	return true;
 }
 
+
+
 FString FBullCowGame::ToLowercase(FString Word)
 {
 	FString TempWord = "";
@@ -130,18 +134,79 @@ FString FBullCowGame::SetHiddenWord(std::vector<FString> WordList)
 std::vector<FString> FBullCowGame::WordList()
 {
 	std::vector<FString> WordList;
-	FString Word = "";
-	
-	std::ifstream input("EasyDifficulty.txt");
-	if (input.is_open())
-	{	
-		while (getline(input, Word))
+	if (!FBullCowGame::IsDifficultySet())
+	{
+		bDifficultySet = true;
+		FString Difficulty = "";
+		std::cout << "Please select your difficultylevel!\n" << "EASY" << "\tMEDIUM" << "\tHARD" << "\tVERY HARD" << std::endl;
+		std::cout << "Please enter your difficulty: " << std::endl;
+		getline(std::cin, Difficulty);
+		Difficulty = ToLowercase(Difficulty);
+		FString Word = "";
+		std::ifstream easy("EasyDifficulty.txt");
+		std::ifstream medium("MediumDifficulty.txt");
+		std::ifstream hard("HardDifficulty.txt");
+		std::ifstream veryhard("VeryHardDifficulty.txt");
+		//TODO convert to switch!
+		if (Difficulty == "easy")
 		{
-			Word = ToLowercase(Word);
-			WordList.push_back(Word);
-			
-			Word = "";
+			if (easy.is_open())
+			{
+				std::cout << "Loading" << std::endl;
+				while (getline(easy, Word))
+				{
+					Word = ToLowercase(Word);
+					WordList.push_back(Word);
+					Word = "";
+				}
+			}
 		}
+		else if (Difficulty == "medium")
+		{
+			if (medium.is_open())
+			{
+				std::cout << "Loading" << std::endl;
+				while (getline(medium, Word))
+				{
+					Word = ToLowercase(Word);
+					WordList.push_back(Word);
+					Word = "";
+				}
+			}
+		}
+		else if (Difficulty == "hard")
+		{
+			if (hard.is_open())
+			{
+				std::cout << "Loading" << std::endl;
+				while (getline(hard, Word))
+				{
+					Word = ToLowercase(Word);
+					WordList.push_back(Word);
+					Word = "";
+				}
+			}
+		}
+		else if (Difficulty == "very hard")
+		{
+			if (veryhard.is_open())
+			{
+				std::cout << "Loading" << std::endl;
+				while (getline(veryhard, Word))
+				{
+					Word = ToLowercase(Word);
+					WordList.push_back(Word);
+					Word = "";
+				}
+			}
+		}
+		
+		return WordList;
 	}
-	return WordList;
+	else
+	{
+		return WordList;
+	}
+
+	
 }
