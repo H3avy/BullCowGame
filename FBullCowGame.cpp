@@ -9,6 +9,7 @@ FBullCowGame::FBullCowGame(){ Reset(); }
 int32 FBullCowGame::GetMaxTries() const { return MyMaxTries; }
 int32 FBullCowGame::GetCurrentTry() const { return MyCurrentTry; }
 int32 FBullCowGame::GetHiddenWordLength() const { return MyHiddenWord.length(); }
+
 bool FBullCowGame::IsGameWon() const { return bGameIsWon; }
 bool FBullCowGame::IsDifficultySet() const { return bDifficultySet; }
 
@@ -16,10 +17,11 @@ bool FBullCowGame::IsDifficultySet() const { return bDifficultySet; }
 
 void FBullCowGame::Reset()
 {
-	constexpr int32 MAX_TRIES = 8;
-	MyMaxTries = MAX_TRIES;
+	
 	const FString HIDDEN_WORD = SetHiddenWord(WordList());
 	MyHiddenWord = HIDDEN_WORD;
+	int32 MAX_TRIES = SetMaxTries(GetHiddenWordLength());
+	MyMaxTries = MAX_TRIES;
 	MyCurrentTry = 1;
 	bGameIsWon = false;
 	bDifficultySet = false;
@@ -231,4 +233,27 @@ bool FBullCowGame::CheckInputValidity(FString input)
 	{
 		return false;
 	}
+}
+
+int32 FBullCowGame::SetMaxTries(int32 WordLength)
+{
+	int32 MaxTries = 0;
+	
+	if (WordLength < 5)
+	{
+		MaxTries = 6;
+	}
+	else if (WordLength > 5 && WordLength < 6)
+	{
+		MaxTries = 10;
+	}
+	else if (WordLength > 6 && WordLength < 9)
+	{
+		MaxTries = 18;
+	}
+	else 
+	{
+		MaxTries = 28;
+	}
+	return MaxTries;
 }
