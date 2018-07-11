@@ -31,9 +31,11 @@ public:
 	int32 GetCurrentTry() const;
 	int32 GetHiddenWordLength() const;
 	bool IsGameWon() const;
+	bool IsDifficultySet() const;
+	bool CheckInputValidity(FString);
 	EGuessStatus CheckGuessValidity(FString) const;
 	std::vector<FString> WordList();
-	bool IsDifficultySet() const;
+	
 
 	void Reset(); 
 	
@@ -48,8 +50,10 @@ private:
 	FString Difficulty;
 	bool bGameIsWon;
 	bool bDifficultySet;
+	bool bInputValidity;
 	bool IsIsogram(FString) const;
 	bool IsLowercase(FString) const;
+
 	
 	FString ToLowercase(FString);
 	FString SetHiddenWord(std::vector<FString>);

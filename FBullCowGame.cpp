@@ -13,6 +13,7 @@ bool FBullCowGame::IsGameWon() const { return bGameIsWon; }
 bool FBullCowGame::IsDifficultySet() const { return bDifficultySet; }
 
 
+
 void FBullCowGame::Reset()
 {
 	constexpr int32 MAX_TRIES = 8;
@@ -22,7 +23,7 @@ void FBullCowGame::Reset()
 	MyCurrentTry = 1;
 	bGameIsWon = false;
 	bDifficultySet = false;
-	
+		
 	return;
 }
 
@@ -126,8 +127,10 @@ FString FBullCowGame::ToLowercase(FString Word)
 
 FString FBullCowGame::SetHiddenWord(std::vector<FString> WordList)
 {
+	int Number = 0;
+	Number = std::rand() % WordList.size();
 	FString HiddenWord = "";
-	HiddenWord = WordList[10];
+	HiddenWord = WordList[Number];
 	return HiddenWord;
 }
 
@@ -136,12 +139,17 @@ std::vector<FString> FBullCowGame::WordList()
 	std::vector<FString> WordList;
 	if (!FBullCowGame::IsDifficultySet())
 	{
-		bDifficultySet = true;
 		FString Difficulty = "";
-		std::cout << "Please select your difficultylevel!\n" << "EASY" << "\tMEDIUM" << "\tHARD" << "\tVERY HARD" << std::endl;
-		std::cout << "Please enter your difficulty: " << std::endl;
-		getline(std::cin, Difficulty);
-		Difficulty = ToLowercase(Difficulty);
+		std::cout << "Please select your difficulty level!\n" << "EASY (up to 4 letter words)" << " MEDIUM (5 - 6 letter Words)" << " HARD (7 - 9 letter words)" << " VERY HARD (10 - 15 letter words)\n\n";
+
+		while (!CheckInputValidity(Difficulty))
+		{
+			std::cout << "Please enter 'easy', 'medium', 'hard' or 'very hard': ";
+			getline(std::cin, Difficulty);
+			Difficulty = ToLowercase(Difficulty);
+			//CheckInputValidity(Difficulty);
+		} 
+			
 		FString Word = "";
 		std::ifstream easy("EasyDifficulty.txt");
 		std::ifstream medium("MediumDifficulty.txt");
@@ -152,12 +160,13 @@ std::vector<FString> FBullCowGame::WordList()
 		{
 			if (easy.is_open())
 			{
-				std::cout << "Loading" << std::endl;
+				std::cout << "Loading easy words" << std::endl;
 				while (getline(easy, Word))
 				{
 					Word = ToLowercase(Word);
 					WordList.push_back(Word);
 					Word = "";
+					bDifficultySet = true;
 				}
 			}
 		}
@@ -165,12 +174,13 @@ std::vector<FString> FBullCowGame::WordList()
 		{
 			if (medium.is_open())
 			{
-				std::cout << "Loading" << std::endl;
+				std::cout << "Loading medium words" << std::endl;
 				while (getline(medium, Word))
 				{
 					Word = ToLowercase(Word);
 					WordList.push_back(Word);
 					Word = "";
+					bDifficultySet = true;
 				}
 			}
 		}
@@ -178,12 +188,13 @@ std::vector<FString> FBullCowGame::WordList()
 		{
 			if (hard.is_open())
 			{
-				std::cout << "Loading" << std::endl;
+				std::cout << "Loading hard" << std::endl;
 				while (getline(hard, Word))
 				{
 					Word = ToLowercase(Word);
 					WordList.push_back(Word);
 					Word = "";
+					bDifficultySet = true;
 				}
 			}
 		}
@@ -191,22 +202,33 @@ std::vector<FString> FBullCowGame::WordList()
 		{
 			if (veryhard.is_open())
 			{
-				std::cout << "Loading" << std::endl;
+				std::cout << "Loading very hard" << std::endl;
 				while (getline(veryhard, Word))
 				{
 					Word = ToLowercase(Word);
 					WordList.push_back(Word);
 					Word = "";
+					bDifficultySet = true;
 				}
 			}
 		}
-		
 		return WordList;
 	}
 	else
 	{
 		return WordList;
 	}
-
 	
+}
+
+bool FBullCowGame::CheckInputValidity(FString input)
+{
+	if (input == "easy" || input == "medium" || input == "hard" || input == "very hard")
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
 }
