@@ -16,7 +16,7 @@ void FBullCowGame::Reset()
 {
 	constexpr int32 MAX_TRIES = 8;
 	MyMaxTries = MAX_TRIES;
-	const FString HIDDEN_WORD = "";
+	const FString HIDDEN_WORD = SetHiddenWord(WordList());
 	MyHiddenWord = HIDDEN_WORD;
 	MyCurrentTry = 1;
 	bGameIsWon = false;
@@ -118,4 +118,30 @@ FString FBullCowGame::ToLowercase(FString Word)
 		TempWord += tolower(Word[count]);
 	}
 	return TempWord;
+}
+
+FString FBullCowGame::SetHiddenWord(std::vector<FString> WordList)
+{
+	FString HiddenWord = "";
+	HiddenWord = WordList[10];
+	return HiddenWord;
+}
+
+std::vector<FString> FBullCowGame::WordList()
+{
+	std::vector<FString> WordList;
+	FString Word = "";
+	
+	std::ifstream input("EasyDifficulty.txt");
+	if (input.is_open())
+	{	
+		while (getline(input, Word))
+		{
+			Word = ToLowercase(Word);
+			WordList.push_back(Word);
+			
+			Word = "";
+		}
+	}
+	return WordList;
 }

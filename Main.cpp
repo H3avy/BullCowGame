@@ -83,11 +83,14 @@ void PlayGame()
 	
 	while (!BCGame.IsGameWon() && BCGame.GetCurrentTry() <= MaxTries)
 	{		
+				
 		FText Guess = GetValidGuess();
 		// Submit valid guess to the game, and recieve counts
 		FBullCowCount BullCowCount = BCGame.SubmitValidGuess(Guess);
 		std::cout << "Bulls = " << BullCowCount.Bulls;
 		std::cout << " Cows = " << BullCowCount.Cows << "\n\n";
+		
+		
 	}
 	PrintGameSummary();
 	return;

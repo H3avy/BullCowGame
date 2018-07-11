@@ -33,7 +33,8 @@ public:
 	int32 GetHiddenWordLength() const;
 	bool IsGameWon() const;
 	EGuessStatus CheckGuessValidity(FString) const;
-	
+	std::vector<FString> WordList();
+
 	void Reset(); 
 	
 	// counts bulls and cows, and increases try # assuming valid guess
@@ -50,4 +51,6 @@ private:
 	bool IsIsogram(FString) const;
 	bool IsLowercase(FString) const;
 	FString ToLowercase(FString);
+	FString SetHiddenWord(std::vector<FString>);
+	
 };
